@@ -1,19 +1,6 @@
 {
-  "name": "angular-token",
+  "name": "@tetrainsights/angular-token",
   "version": "9.0.0-beta.0",
-  "repository": "https://github.com/neroniaky/angular-token.git",
-  "author": {
-    "name": "Jan-Philipp Riethmacher",
-    "email": "neroniaky@gmail.com",
-    "url": "https://github.com/neroniaky"
-  },
-  "contributors": [
-    {
-      "name": "Arjen Brandenburgh",
-      "email": "mail@arjenbrandenburgh.nl",
-      "url": "https://github.com/arjenbrandenburgh"
-    }
-  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/neroniaky/angular-token/issues"

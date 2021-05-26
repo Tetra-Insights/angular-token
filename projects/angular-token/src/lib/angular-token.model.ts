@@ -42,6 +42,7 @@ export interface ApiResponse {
   statusText?: string;
   data?: UserData;
   errors?: any;
+  headers?: any;
 }
 
 // State Data

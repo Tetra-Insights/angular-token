@@ -11,8 +11,11 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:lib": "ng build --prod angular-token && cp README.md dist/angular-token",
-    "test:lib": "ng test angular-token"
+    "build:lib": "ng build --prod angular-token && yarn copy:npmrc && cp README.md dist/angular-token",
+    "test:lib": "ng test angular-token",
+    "copy:readme": "cp README.md ./dist/angular-token",
+    "copy:npmrc": "cp .npmrc ./dist/angular-token",
+    "lib:publish": "cd ./dist/angular-token && yarn pack && yarn publish"
   },
   "private": true,
   "dependencies": {
