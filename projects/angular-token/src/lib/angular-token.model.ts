@@ -1,5 +1,6 @@
 // Function Data
 import { Provider } from '@angular/core';
+import {Observable} from 'rxjs';
 
 export interface SignInData {
   login:                  string;
@@ -30,6 +31,7 @@ export interface UpdatePasswordData {
 export interface ResetPasswordData {
   login:                  string;
   userType?:              string;
+  additionalData?:        any;
 }
 
 // API Response Format
@@ -86,8 +88,10 @@ export interface AngularTokenOptions {
   signInPath?:                string;
   signInRedirect?:            string;
   signInStoredUrlStorageKey?: string;
+  signInFunction?:            (body: {username: string, password: string, additionalData: any}) => Observable<ApiResponse>;
 
   signOutPath?:               string;
+  signOutFunction?:           () => Observable<ApiResponse>;
   validateTokenPath?:         string;
   signOutFailedValidate?:     boolean;
 

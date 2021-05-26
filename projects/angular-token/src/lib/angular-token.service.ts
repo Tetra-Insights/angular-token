@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, CanActivate, ActivatedRouteSnapshot, RouterStat
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
 
-import { Observable, fromEvent, interval, BehaviorSubject } from 'rxjs';
+import {Observable, fromEvent, interval, BehaviorSubject, iif} from 'rxjs';
 import { pluck, filter, share, finalize } from 'rxjs/operators';
 
 import { ANGULAR_TOKEN_OPTIONS } from './angular-token.token';
@@ -233,9 +233,10 @@ export class AngularTokenService implements CanActivate {
       body.additionalData = additionalData;
     }
 
-    const observ = this.http.post<ApiResponse>(
-      this.getServerPath() + this.options.signInPath, body
-    ).pipe(share());
+    const observ = iif(() => !!this.options.signInFunction,
+      this.options.signInFunction({username: signInData.login, password: signInData.password, additionalData: additionalData}),
+      this.http.post<ApiResponse>(this.getServerPath() + this.options.signInPath, body
+    )).pipe(share());
 
     observ.subscribe(res => this.userData.next(res.data));
 
@@ -332,7 +333,9 @@ export class AngularTokenService implements CanActivate {
 
   // Sign out request and delete storage
   signOut(): Observable<ApiResponse> {
-    return this.http.delete<ApiResponse>(this.getServerPath() + this.options.signOutPath)
+    return iif(() => !!this.options.signOutFunction,
+      this.options.signOutFunction(),
+      this.http.delete<ApiResponse>(this.getServerPath() + this.options.signOutPath))
       // Only remove the localStorage and clear the data after the call
       .pipe(
         finalize(() => {
@@ -399,8 +402,8 @@ export class AngularTokenService implements CanActivate {
 
   // Reset password request
   resetPassword(resetPasswordData: ResetPasswordData, additionalData?: any): Observable<ApiResponse> {
-    
-    
+
+
     if (additionalData !== undefined) {
       resetPasswordData.additionalData = additionalData;
     }
